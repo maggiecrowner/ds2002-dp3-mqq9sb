@@ -67,3 +67,4 @@ reassembled = sorted(messages, key=lambda x: x['order'])
 words = [item['word'] for item in reassembled]
 sentence = ' '.join(words)
 print(sentence)
+
