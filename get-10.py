@@ -8,6 +8,17 @@ sqs = boto3.client('sqs')
 
 messages = []
 
+def delete_message(handle):
+    try:
+        # Delete message from SQS queue
+        sqs.delete_message(
+            QueueUrl=url,
+            ReceiptHandle=handle
+        )
+        print("Message deleted")
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+
 def get_message():
     for i in range(10):
         try:
@@ -44,6 +55,9 @@ def get_message():
     # Handle any errors that may occur connecting to SQS
         except ClientError as e:
             print(e.response['Error']['Message'])
+        finally:
+            delete_message(handle)
+
 
 # Trigger the function
 if __name__ == "__main__":
@@ -53,6 +67,3 @@ reassembled = sorted(messages, key=lambda x: x['order'])
 words = [item['word'] for item in reassembled]
 sentence = ' '.join(words)
 print(sentence)
-
-
-
